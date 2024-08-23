@@ -48,6 +48,21 @@ namespace Test.Unit {
             Assert.Throws<NotAllIItemsPricedException>(() => checkoutService.GetTotalPrice());
         }
 
+        public static IEnumerable<object[]> UnmatchedSkuData => [
+            [new List<PriceRule>(), new List<string> { "A", "B", "C" }],
+            [new List<PriceRule> { new UnitPriceRule("A", 20) }, new List<string> { "B" }]
+        ];
+
+        [Theory]
+        [MemberData(nameof(UnmatchedSkuData))]
+        public void CheckoutService_UnmatchedSku_Invalid(List<PriceRule> priceRules, List<string> items) {
+            var checkoutService = new CheckoutService(priceRules);
+
+            checkoutService.Scan(items);
+
+            Assert.Throws<NotAllIItemsPricedException>(() => checkoutService.GetTotalPrice());
+        }
+
         public static IEnumerable<object[]> MixedPriceData => [
             [new List<PriceRule> { new UnitPriceRule("A", 50), new SpecialPriceRule("A", 3, 130) , new UnitPriceRule("B", 30), new SpecialPriceRule("B", 2, 45) }, new List<string> { "B", "A", "B" }, 95 ]
         ];
