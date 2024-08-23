@@ -1,4 +1,11 @@
 ﻿namespace Checkout.Models {
-    public class PriceRule {
+    public abstract class PriceRule {
+        public string Sku { get; }
+
+        protected PriceRule(string sku) {
+            Sku = sku;
+        }
+
+        public abstract decimal CalculatePrice(int quantity);
     }
 }
