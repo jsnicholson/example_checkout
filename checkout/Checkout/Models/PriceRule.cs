@@ -6,6 +6,6 @@
             Sku = sku;
         }
 
-        public abstract decimal CalculatePrice(int quantity);
+        public abstract PriceResult CalculatePrice(int quantity);
     }
 }

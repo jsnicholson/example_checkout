@@ -4,19 +4,19 @@
         private readonly decimal _specialPrice;
         // fallback price is basically a unit price. want to avoid some complex inheritance tree though.
         // want a way of getting this out, means that price calculation either needs to be aware of other pricing (bad), or we need to return other data?
-        private readonly decimal _fallbackPrice;
 
-        public SpecialPriceRule(string sku, int quantityForSpecialPrice, decimal specialPrice, decimal fallbackPrice) : base(sku) {
+        public SpecialPriceRule(string sku, int quantityForSpecialPrice, decimal specialPrice) : base(sku) {
             _quantityForSpecialPrice = quantityForSpecialPrice;
             _specialPrice = specialPrice;
-            _fallbackPrice = fallbackPrice;
         }
 
-        public override decimal CalculatePrice(int quantity) {
+        public override PriceResult CalculatePrice(int quantity) {
             int specialPriceCount = quantity / _quantityForSpecialPrice;
-            int regularPriceCount = quantity % _quantityForSpecialPrice;
+            int remainingCount = quantity % _quantityForSpecialPrice;
 
-            return (specialPriceCount * _specialPrice) + (regularPriceCount * _fallbackPrice);
+            decimal price = (specialPriceCount * _specialPrice);
+
+            return new PriceResult(price, quantity - remainingCount);
         }
     }
 }

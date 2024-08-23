@@ -6,8 +6,8 @@
             _unitPrice = unitPrice;
         }
 
-        public override decimal CalculatePrice(int quantity) {
-            return _unitPrice * quantity;
+        public override PriceResult CalculatePrice(int quantity) {
+            return new PriceResult(_unitPrice * quantity, quantity);
         }
     }
 }

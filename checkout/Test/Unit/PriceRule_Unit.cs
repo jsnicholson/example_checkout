@@ -11,19 +11,19 @@ namespace Test.Unit {
 
             var result = unitPriceRule.CalculatePrice(quantity);
 
-            Assert.Equal(expectedTotal, result);
+            Assert.Equal(expectedTotal, result.price);
         }
 
         [Theory]
-        [InlineData(35, 3, 15, 3, 35)]
-        [InlineData(35, 3, 15, 2, 30)]
-        [InlineData(35, 3, 15, 4, 50)]
-        public void SpecialPrice_CalculatePrice_Correct(int specialPrice, int quantityForSpecialPrice, int fallbackPrice, int quantity, int expectedTotal) {
-            var specialPriceRule = new SpecialPriceRule("A", quantityForSpecialPrice, specialPrice, fallbackPrice);
+        [InlineData(35, 3, 3, 35)]
+        [InlineData(60, 4, 4, 60)]
+        public void SpecialPrice_CalculatePrice_Correct(int specialPrice, int quantityForSpecialPrice, int quantity, int expectedTotal) {
+            var specialPriceRule = new SpecialPriceRule("A", quantityForSpecialPrice, specialPrice);
 
             var result = specialPriceRule.CalculatePrice(quantity);
 
-            Assert.Equal(expectedTotal, result);
+            Assert.Equal(expectedTotal, result.price);
+            Assert.Equal(quantity, result.quantityAccountedFor);
         }
     }
 }

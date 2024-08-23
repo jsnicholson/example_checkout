@@ -1,4 +1,5 @@
-﻿using Checkout.Models;
+﻿using Checkout.Library.Exceptions;
+using Checkout.Models;
 using Checkout.Services.Interfaces;
 
 namespace Checkout.Services {
@@ -15,18 +16,28 @@ namespace Checkout.Services {
 
             foreach((string sku, int quantity) in _scannedItems) {
                 var applicableRules = _priceRules.Where(r => r.Sku == sku).ToList();
-                totalPrice += GetBestPrice(applicableRules, quantity);
+                totalPrice += GetBestPrice(sku, applicableRules, quantity);
             }
 
             return totalPrice;
         }
 
-        private decimal GetBestPrice(List<PriceRule> priceRules, int quantity) {
+        private decimal GetBestPrice(string sku, List<PriceRule> priceRules, int quantity) {
+            if(quantity <= 0) return 0;
+
             decimal minPrice = decimal.MaxValue;
 
             foreach(var rule in priceRules) {
-                decimal price = rule.CalculatePrice(quantity);
-                minPrice = Math.Min(minPrice, price);
+                PriceResult result = rule.CalculatePrice(quantity);
+
+                if(result.quantityAccountedFor > 0) {
+                    decimal remainingPrice = GetBestPrice(sku, priceRules, quantity - result.quantityAccountedFor);
+                    minPrice = Math.Min(minPrice, result.price + remainingPrice);
+                }
+            }
+
+            if(minPrice == decimal.MaxValue) {
+                throw new NotAllIItemsPricedException($"No applicable rules found for {quantity} '{sku}'s");
             }
 
             return minPrice;
