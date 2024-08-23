@@ -20,4 +20,13 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integration\" />
+    <Folder Include="Mocks\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Checkout\Checkout.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,7 @@
 ﻿namespace Checkout.Services.Interfaces {
     public interface ICheckoutService {
         void Scan(string item);
-        int GetTotalPrice();
+        void Scan(List<String> items);
+        decimal GetTotalPrice();
     }
 }
