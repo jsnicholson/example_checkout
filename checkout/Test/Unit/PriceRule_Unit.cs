@@ -15,9 +15,11 @@ namespace Test.Unit {
         }
 
         [Theory]
-        [InlineData(0, 0, 0, 0, 0)]
+        [InlineData(35, 3, 15, 3, 35)]
+        [InlineData(35, 3, 15, 2, 30)]
+        [InlineData(35, 3, 15, 4, 50)]
         public void SpecialPrice_CalculatePrice_Correct(int specialPrice, int quantityForSpecialPrice, int fallbackPrice, int quantity, int expectedTotal) {
-            var specialPriceRule = new SpecialPriceRule("A", fallbackPrice, quantityForSpecialPrice, specialPrice);
+            var specialPriceRule = new SpecialPriceRule("A", quantityForSpecialPrice, specialPrice, fallbackPrice);
 
             var result = specialPriceRule.CalculatePrice(quantity);
 
