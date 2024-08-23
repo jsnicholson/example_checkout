@@ -1,5 +1,5 @@
-namespace Test {
-    public class UnitTest1 {
+namespace Test.Unit {
+    public class CheckoutService_Unit {
         [Fact]
         public void Test1() {
 
