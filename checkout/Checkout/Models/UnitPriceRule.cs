@@ -2,8 +2,8 @@
     public class UnitPriceRule : PriceRule {
         private readonly decimal _unitPrice;
 
-        public UnitPriceRule(string sku, int unitPice) : base(sku) {
-            _unitPrice = unitPice;
+        public UnitPriceRule(string sku, decimal unitPrice) : base(sku) {
+            _unitPrice = unitPrice;
         }
 
         public override decimal CalculatePrice(int quantity) {
